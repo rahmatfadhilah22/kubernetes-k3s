@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-deployment          # Nama deployment
+  labels:
+    app: sample
+spec:
+  replicas: 3                      # Jumlah Pod yang diinginkan (bisa diubah)
+  revisionHistoryLimit: 5          # Simpan 5 riwayat update utk rollback
+  selector:
+    matchLabels:
+      app: sample                  # Harus sama dengan template.metadata.labels
+  template:
+    metadata:
+      labels:
+        app: sample                # Label Pod yg akan dipakai Service
+    spec:
+      containers:
+        - name: app
+          image: nginx:alpine      # Ganti sesuai image aplikasi kamu
+          envFrom:
+            - configMapRef:
+                - sample-config
+            - secretRef:
+                - sample-secret
+          ports:
+            - containerPort: 80
+          resources:               # Penting utk production + HPA
+            requests:
+              cpu: "100m"          # m = millicore (0.1 core)
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          # readinessProbe:        # Aktifkan ini kalau app-nya butuh waktu boot
+          #   httpGet:
+          #     path: /
+          #     port: 80
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          # livenessProbe:         # Aktifkan ini untuk auto-restart kalau hang
+          #   httpGet:
+          #     path: /
+          #     port: 80
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 20

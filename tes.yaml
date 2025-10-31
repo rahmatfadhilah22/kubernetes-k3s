@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service              # gunakan nama yang konsisten dengan Deployment
+spec:
+  selector:
+    app: webapp                     # harus sama dengan label di Deployment
+  ports:
+    - protocol: TCP
+      port: 80                      # port yang akan diakses dari dalam cluster
+      targetPort: 80                # port di dalam container
+  type: ClusterIP                   # default service type

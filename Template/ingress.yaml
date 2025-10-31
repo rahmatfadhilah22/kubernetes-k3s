@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sample-ingress
+spec:
+  ingressClassName: traefik     # K3s pakai Traefik by default
+  rules:
+    - http:                     # Tidak pakai host → semua host diterima
+        paths:
+          - path: /             # Akses: http://IP-KAMU/
+            pathType: Prefix
+            backend:
+              service:
+                name: sample-service   # Arahkan ke Service di atas
+                port:
+                  number: 80

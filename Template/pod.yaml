@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-pod             # Nama Pod
+  labels:
+    app: sample                # Label supaya bisa ditarget Service
+spec:
+  containers:
+    - name: app                # Nama container di dalam Pod
+      image: nginx:alpine      # Image yang dijalankan
+      ports:
+        - containerPort: 80    # Port yang dibuka di dalam container
+      resources:
+        requests:
+          cpu: "100m"          # m = millicore, 100m = 0.1 CPU
+          memory: "128Mi"
+        limits:
+          cpu: "250m"
+          memory: "256Mi"
+      # env:
+      #   - name: ENVIRONMENT
+      #     value: "production"

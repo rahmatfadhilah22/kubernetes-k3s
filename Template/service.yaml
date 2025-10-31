@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-service          # Nama service yang akan dipanggil Ingress / Pod lain
+spec:
+  selector:
+    app: sample                 # Harus sama dengan label di Deployment
+  ports:
+    - protocol: TCP
+      port: 80                  # Port yang dipakai di dalam cluster
+      targetPort: 80            # Port di dalam container
+  type: ClusterIP               # Default, hanya bisa diakses dari dalam cluster
